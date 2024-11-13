@@ -2,9 +2,9 @@ import mujoco
 import mujoco_viewer
 
 model_path = "models/google_barkour_v0/scene_mjx.xml"
-
+patriq = "PATRIQ/patriq.xml"
 # load the model and data
-model = mujoco.MjModel.from_xml_path(model_path)
+model = mujoco.MjModel.from_xml_path(patriq)
 data = mujoco.MjData(model)
 mujoco.mj_resetDataKeyframe(model, data, 0)
 
