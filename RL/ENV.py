@@ -14,7 +14,7 @@ class QuadrupedEnv(gym.Env):
         self.viewer = mujoco_viewer.MujocoViewer(self.model, self.data)
 
         # Define action and observation spaces
-        self.action_space = spaces.Box(low=-0.5, high=0.5, shape=(self.model.nu,), dtype=np.float32)
+        self.action_space = spaces.Box(low=-1, high=1, shape=(self.model.nu,), dtype=np.float32)
         obs_dim = self.data.qpos.shape[0] + self.data.qvel.shape[0]
         self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(obs_dim,), dtype=np.float32)
 
@@ -47,6 +47,7 @@ class QuadrupedEnv(gym.Env):
 
     def _compute_reward(self):
         # Define a custom reward function
+
         return 0
 
     def _is_done(self):
