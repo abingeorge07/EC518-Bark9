@@ -6,7 +6,7 @@ patriq = "PATRIQ/patriq.xml"
 example = "PATRIQ/example.xml"  
 # patriq = "PATRIQ/example.xml"
 # load the model and data
-model = mujoco.MjModel.from_xml_path(patriq)
+model = mujoco.MjModel.from_xml_path(model_path)
 data = mujoco.MjData(model)
 mujoco.mj_resetDataKeyframe(model, data, 0)
 
