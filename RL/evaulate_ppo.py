@@ -1,3 +1,10 @@
+from stable_baselines3 import PPO
+
+from ENV import QuadrupedEnv
+
+# Initialize the environment
+env = QuadrupedEnv("PATRIQ/patriq.xml")
+
 # Load the trained model
 model = PPO.load("ppo_quadruped")
 
