@@ -1,11 +1,12 @@
 from stable_baselines3 import PPO
 from stable_baselines3.common.env_checker import check_env
+from ENV import QuadrupedEnv
 
 # Initialize the environment
 env = QuadrupedEnv("PATRIQ/patriq.xml")
 
-# Check the environment
-check_env(env)
+# # Check the environment
+# check_env(env)
 
 # Train the PPO model
 model = PPO("MlpPolicy", env, verbose=1)

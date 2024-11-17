@@ -4,7 +4,7 @@ from ENV import QuadrupedEnv
 env = QuadrupedEnv("PATRIQ/patriq.xml")
 
 # Test the environment
-obs = env.reset()
+# obs = env.reset()
 done = False
 while not done:
     action = env.action_space.sample()  # Take random actions
