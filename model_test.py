@@ -43,4 +43,3 @@ while viewer.is_alive:
     # render the model
     viewer.render()
 
-# HI ADI HOW ARE YOU??
