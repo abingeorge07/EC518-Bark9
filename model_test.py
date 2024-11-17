@@ -44,3 +44,5 @@ while viewer.is_alive:
     viewer.render()
 
 # HI ADI HOW ARE YOU??
+
+print("testttt")
