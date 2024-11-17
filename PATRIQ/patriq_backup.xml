@@ -1,6 +1,6 @@
 <mujoco model="ec518_PATriQ">
     <compiler angle="radian" coordinate="local"/>
-    <option gravity="0 0 -9.81" timestep="0.001"/>
+    <option gravity="0 0 9.81" timestep="0.001"/>
     <default>
     <geom conaffinity="0" contype="4"/>
     <!-- condim=‘1’ solref=‘0.005 1’ sol"   imp ="0.9 0.95 0.001 0.5 2"/>-->
@@ -12,8 +12,7 @@
     </asset>
     <worldbody>
         <!-- Ground plane with grid pattern -->
-        <!-- <geom type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.9 0.9 0.9 1" material="grid"/> -->
-        <geom conaffinity="4" contype="2" material="grid" name="floor" pos="0 0 0" size="0 0 .25" type="plane"/>
+        <geom type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.9 0.9 0.9 1" material="grid"/>
         <!-- Controller Torso -->
         <body name="controller_torso_body" pos="0 0 0.05" euler="-1.57 3.14 0">
             <joint name="FLOATING" type="free"/>
