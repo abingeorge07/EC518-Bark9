@@ -33,7 +33,7 @@ temp = angle
 
 while viewer.is_alive:
 
-    # data.qpos[8] = 0.6
+    # data.qpos[8] = 10
     # data.qpos[9] = -0.6
 
     # step the simulation
@@ -44,4 +44,3 @@ while viewer.is_alive:
     viewer.render()
 
 # HI ADI HOW ARE YOU??
-# im good 
