@@ -20,16 +20,16 @@
             <geom type="mesh" mesh="controller_torso" rgba="1.0 0.502 0.545 1"/>
             
             <!-- Adding a camera -->
-            <camera euler="0 0 0" fovy="60" name="main_camera" pos="0 0 0.5" mode="targetbody" target="controller_torso_body"/>
+            <camera euler="0.8 0 3.14152" fovy="60" name="main_camera" pos="0.05 -0.05 0" />
 
             <!-- Motor torso -->
             <body name="motor_torso_body" pos="0 0 0.11">
             <joint name="z_rotation_joint" type="hinge" axis="0 0 1" pos="0.025 0.02 0" range="-1.57 1.57" damping="0.05"/>
             <geom type="mesh" mesh="motor_torso" rgba="1.0 0.502 0.545 1"/>
-            <!-- Back Leg (Purple) -->
+            <!-- Back Leg (Yellow) -->
             <body name="back_leg" pos="-0.065 0.0497 0.08" euler="3.14 0 0">
             <joint axis="0 1 0" damping="0.05" name="LEG2" pos="0.088 0.02 0.015" range="-1.5707963 1.5707963" type="hinge"/>
-            <geom type="mesh" mesh="legs" rgba="0.471 0.824 0.243 1"/>
+            <geom type="mesh" mesh="legs" rgba="1 0.824 0.243 1"/>
             </body>
             </body>
             <!-- Front Leg (Green) -->
@@ -46,6 +46,11 @@
     <motor joint="LEG1" name="LEG1_act"/>
     <motor joint="LEG2" name="LEG2_act"/>
     </actuator>
+<!--    
+    <sensor>
+        <camer
+    </sensor> -->
+
     <asset>
         <!-- Grid material for the ground -->
         <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.9 0.9 0.9" rgb2="0.7 0.7 0.7"/>
