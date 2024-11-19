@@ -14,6 +14,10 @@
         <!-- Ground plane with grid pattern -->
         <!-- <geom type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.9 0.9 0.9 1" material="grid"/> -->
         <geom conaffinity="4" contype="2" material="grid" name="floor" pos="0 0 0" size="0 0 .25" type="plane"/>
+
+        <!-- Adding a camera -->
+        <camera euler="0.8 0 3.14152" fovy="60" name="top" pos="0.05 -0.05 0" />
+
         <!-- Controller Torso -->
         <body name="controller_torso_body" pos="0 0 0.05" euler="-1.57 3.14 0">
             <joint name="FLOATING" type="free"/>

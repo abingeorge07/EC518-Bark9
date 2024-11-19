@@ -40,14 +40,11 @@ camera_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_CAMERA, camera_name)
 camera = mujoco.MjvCamera()
 camera.type = mujoco.mjtCamera.mjCAMERA_FIXED
 camera.fixedcamid = camera_id
-camera.trackbodyid = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "robot_body_name")  # Replace "robot_body_name" with the actual body name
-camera.lookat[:] = data.body("controller_torso_body").xpos  # Adjust the lookat point to the robot's position
-camera.distance = 0  # Adjust the distance from the robot
-camera.elevation = -20  # Adjust the elevation angle
-camera.azimuth = 0  # Adjust the azimuth angle
+
 
 # Top View Camera
 camera_top = mujoco.MjvCamera()
+
 
 
 # Initialize the viewer
