@@ -1,4 +1,5 @@
 import mujoco
+import mujoco.mjx
 import mujoco_viewer
 
 model_path = "models/google_barkour_v0/scene_mjx.xml"
@@ -9,6 +10,8 @@ example = "PATRIQ/example.xml"
 model = mujoco.MjModel.from_xml_path(patriq)
 data = mujoco.MjData(model)
 mujoco.mj_resetDataKeyframe(model, data, 0)
+
+camera = mujoco.MjvCamera()
 
 # create the viewer object
 viewer = mujoco_viewer.MujocoViewer(model, data)
@@ -43,3 +46,7 @@ while viewer.is_alive:
     # render the model
     viewer.render()
 
+    # camera update
+    camera.lookat[0] = 0
+
+    # get the current joint angles

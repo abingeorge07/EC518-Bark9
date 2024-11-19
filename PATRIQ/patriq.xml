@@ -18,6 +18,10 @@
         <body name="controller_torso_body" pos="0 0 0.05" euler="-1.57 3.14 0">
             <joint name="FLOATING" type="free"/>
             <geom type="mesh" mesh="controller_torso" rgba="1.0 0.502 0.545 1"/>
+            
+            <!-- Adding a camera -->
+            <camera euler="0 0 0" fovy="60" name="main_camera" pos="0 0 0.5" mode="targetbody" target="controller_torso_body"/>
+
             <!-- Motor torso -->
             <body name="motor_torso_body" pos="0 0 0.11">
             <joint name="z_rotation_joint" type="hinge" axis="0 0 1" pos="0.025 0.02 0" range="-1.57 1.57" damping="0.05"/>
