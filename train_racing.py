@@ -4,6 +4,12 @@ import numpy as np
 from constant import *
 import mujoco
 from heightMap import *
+import cv2
+import torch
+import numpy as np
+from torchvision.transforms import Compose, Normalize, Resize, ToTensor
+from spinup import sac_pytorch
+from spinup.algos.pytorch.sac.core import MLPActorCritic
 
 '''
 GYM environment using the mujoco model
@@ -16,7 +22,18 @@ example_quad = "models/google_barkour_v0/scene_mjx.xml"
 
 class quadrupedEnv(gym.Env):
 
-    def __init__(self):
+    def __init__(self, model=None):
+
+        # # Use gpu if available
+        # self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+        # # model
+        # self.model = model
+        # midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
+        # self.midas_transform = midas_transforms.small_transform
+        
+        # # move model to device
+        # self.model.to(self.device)
 
         # constants
         self.height = HEIGHT
@@ -81,7 +98,7 @@ class quadrupedEnv(gym.Env):
 
 
     def reset(self):
-        
+
         # Reset the model
         mujoco.glfw.glfw.terminate()
 
@@ -154,8 +171,42 @@ class quadrupedEnv(gym.Env):
             self.windowView(self.model, self.data, self.opt, self.camera, self.scene, self.context, self.window)
             
             # Get the height map 
-            _, self.rgb_buffer = get_height_map(self.model, self.data, self.camera, self.scene, self.context, self.window)
-    
+            self.depth_mujoco, self.rgb_buffer = get_height_map(self.model, self.data, self.camera, self.scene, self.context, self.window)
+
+
+            # image = cv2.imread("image.png")  # OpenCV loads as BGR
+
+            # self.rgb_buffer = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
+            self.depth_image = get_height_map_from_rgb(self.rgb_buffer)
+            
+
+            
+
+            # # Preprocess the image
+            # input_batch = self.midas_transform(self.rgb_buffer)
+
+            # # Move to device
+            # input_batch = input_batch.to(self.device)
+
+
+            # # Get the depth map
+            # # Perform depth estimation
+            # with torch.no_grad():
+            #     prediction = model(input_batch)
+
+            #     prediction = torch.nn.functional.interpolate(
+            #         prediction.unsqueeze(1),
+            #         size=[self.height, self.width],
+            #         mode="bicubic",
+            #         align_corners=False,
+            #     ).squeeze()
+
+            # depth_map = prediction.cpu().numpy()  # Remove batch dimension and convert to NumPy
+            
+            # self.depth_map = depth_map
+
+
         ## WINDOW 2 ##
         self.windowView(self.model, self.data, self.opt, self.camera_top, self.scene_top, self.context_top, self.window_top)
 
@@ -184,26 +235,59 @@ class quadrupedEnv(gym.Env):
 
 
 if __name__ == "__main__":
+
+    # # Load the model
+    # model_type = "MiDaS_small"  # Options: DPT_Large, DPT_Hybrid, MiDaS_small
+    # model = torch.hub.load("intel-isl/MiDaS", model_type)
+
+
+
     env = quadrupedEnv()
+    env_fn = lambda : quadrupedEnv()
 
-    simstart = env.startSim()
+    # Hyperparameters
+    ac_kwargs = dict(hidden_sizes=[256, 256])
+
+    # Train SAC
+    sac_pytorch(
+        env_fn=env_fn,
+        actor_critic=None,  # Use default MLPActorCritic or provide a custom one
+        ac_kwargs=ac_kwargs,
+        seed=42,
+        steps_per_epoch=4000,
+        epochs=100,
+        replay_size=int(1e6),
+        gamma=0.99,
+        polyak=0.995,
+        lr=1e-3,
+        alpha=0.2,
+        batch_size=100,
+        start_steps=10000,
+        update_after=1000,
+        update_every=50,
+        num_test_episodes=10,
+        max_ep_len=1000,
+        save_freq=10,
+    )
+
+
+    # simstart = env.startSim()
     
-    while not mujoco.glfw.glfw.window_should_close(env.window_top):
-        simstart = env.startSim()
+    # while not mujoco.glfw.glfw.window_should_close(env.window_top):
+    #     simstart = env.startSim()
 
-        torques = [0.1, 0.001, 0.001]
+    #     torques = [0.1, 0.001, 0.001]
 
-        while (env.data.time - simstart < 1.0/60.0):
-            env.step()
+    #     while (env.data.time - simstart < 10.0/60.0):
+    #         env.step()
 
-        env.render()
-        if(env.pov_working):
-            # Finding teh height map from the rgb buffer
-            depth_buffer = get_height_map_from_rgb(env.rgb_buffer)
+    #     env.render()
+    #     if(env.pov_working):
+    #         # Display the height map
+    #         cv2.imshow("Height Map", env.depth_mujoco)
+    #         # cv2.imshow("Depth Map", env.depth_map)
 
-            # # Display the height map
-            cv2.imshow("Height Map", depth_buffer)
-
-            if cv2.waitKey(1) == ord('q'):
-                break
+    #         if cv2.waitKey(1) == ord('q'):
+    #             break
         
+    
