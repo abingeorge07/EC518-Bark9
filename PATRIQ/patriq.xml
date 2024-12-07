@@ -13,7 +13,15 @@
     <worldbody>
         <!-- Ground plane with grid pattern -->
         <!-- <geom type="plane" pos="0 0 0" size="5 5 0.1" rgba="0.9 0.9 0.9 1" material="grid"/> -->
-        <geom conaffinity="4" contype="2" material="grid" name="floor" pos="0 0 0" size="0 0 .25" type="plane"/>
+        <!-- <geom conaffinity="4" contype="2" material="grid" name="floor" pos="0 0 0" size="0 0 .25" type="plane"/> -->
+        <geom type="hfield" 
+              hfield="terrain_heightfield" 
+              conaffinity="4" contype="2"
+              name="terrain" 
+              pos="0 0 0" 
+              size="5 5 0.5" 
+              rgba="0.9 0.9 0.9 1" 
+              material="grid"/>
 
         <!-- Adding a camera -->
         <camera euler="0.8 0 3.14152" fovy="60" name="top" pos="0.05 -0.05 0" />
@@ -57,7 +65,14 @@
 
     <asset>
         <!-- Grid material for the ground -->
-        <texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1="0.9 0.9 0.9" rgb2="0.7 0.7 0.7"/>
+        <!-- Define heightfield -->
+        <hfield name="terrain_heightfield" 
+                     file="height_field.png" 
+                     nrow="100" ncol="100" 
+                     size="2 2 0.25 1"/>
+                     
+        <!-- <heightfield name="floor" texture="height_field.png" nrow="100" ncol="100" size="5 5 1" /> -->
+        <texture name="grid" file="height_field.png" type="2d" builtin="checker" width="512" height="512" rgb1="0.9 0.9 0.9" rgb2="0.7 0.7 0.7"/>
         <material name="grid" texture="grid" texrepeat="5 5" reflectance="0.2"/>
     </asset>
 </mujoco>
