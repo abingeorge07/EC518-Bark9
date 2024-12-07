@@ -95,10 +95,10 @@ while not mujoco.glfw.glfw.window_should_close(window_top):
         windowView(model, data, opt, camera, scene, context, window)
         
         # Get the height map 
-        depth_buffer, rgb_buffer = get_height_map(model, data, camera, scene, context, window)
+        _, rgb_buffer = get_height_map(model, data, camera, scene, context, window)
 
         # Finding teh height map from the rgb buffer
-        # depth_buffer = get_height_map_from_rgb(rgb_buffer)
+        depth_buffer = get_height_map_from_rgb(rgb_buffer)
 
         # Display the height map
         cv2.imshow("Height Map", depth_buffer)
