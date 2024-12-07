@@ -165,6 +165,13 @@ class quadrupedEnv(gym.Env):
 
     # Used to do a step in the environment
     def step(self, action):
+        control1, control2, control3 = action
+
+        # Set the control
+        self.data.ctrl[0] = control1
+        self.data.ctrl[1] = control2
+        self.data.ctrl[2] = control3
+        
         
 
 
