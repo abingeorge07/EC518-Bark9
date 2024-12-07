@@ -1,17 +1,28 @@
 from ENV import QuadrupedEnv
 
 # Initialize the environment with the path to your XML file
-env = QuadrupedEnv("PATRIQ/patriq.xml")
-# env = QuadrupedEnv("../models/google_barkour_v0/scene_mjx.xml")
+xml_path = "PATRIQ/patriq.xml"  # Update this to the correct path
+env = QuadrupedEnv(xml_path)
 
-# Test the environment
-# obs = env.reset()
-done = False
-while not done:
-    action = env.action_space.sample()  # Take random actions
-    
-    print(action)
-    obs, reward, done, info = env.step(action)
-    env.render()
+try:
+    # Reset the environment
+    obs = env.reset()
+    print("Initial Observation:", obs)
 
-env.close()
+    # Take a few steps with random actions
+    for _ in range(20):  # Run 10 steps
+        action = env.action_space.sample()  # Sample a random action
+        obs, reward, done, info = env.step(action)  # Step the environment
+
+        # Render the environment
+        env.render()  # Display the MuJoCo Viewer
+
+        print(f"Observation: {obs}")
+        print(f"Reward: {reward}")
+        print(f"Done: {done}")
+        if done:
+            print("Environment reached a termination condition.")
+            break
+finally:
+    # Ensure the environment is properly closed
+    env.close()

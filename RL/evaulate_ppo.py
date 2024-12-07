@@ -1,12 +1,11 @@
 from stable_baselines3 import PPO
-
 from ENV import QuadrupedEnv
 
 # Initialize the environment
 env = QuadrupedEnv("PATRIQ/patriq.xml")
 
 # Load the trained model
-model = PPO.load("ppo_quadruped")
+model = PPO.load("ppo_quadruped.zip", device="cpu")
 
 # Run the environment with the trained model
 obs = env.reset()
