@@ -3,6 +3,7 @@ from gym import wrappers, spaces
 import numpy as np
 from constant import *
 import mujoco
+from heightMap import *
 
 '''
 GYM environment using the mujoco model
@@ -56,7 +57,7 @@ class quadrupedEnv(gym.Env):
             mujoco.glfw.glfw.swap_interval(1)
             # Create a scene and context
             self.scene = mujoco.MjvScene(self.model, maxgeom=10000)
-            context = mujoco.MjrContext(self.model, mujoco.mjtFontScale.mjFONTSCALE_150.value)
+            self.context = mujoco.MjrContext(self.model, mujoco.mjtFontScale.mjFONTSCALE_150.value)
 
 
         self.window_top = mujoco.glfw.glfw.create_window(self.width, self.height, "Top-Down", None, None)
@@ -129,54 +130,80 @@ class quadrupedEnv(gym.Env):
         self.context_top = mujoco.MjrContext(self.model, mujoco.mjtFontScale.mjFONTSCALE_150.value)
 
 
-    # Used to view the environment
-    def render(self):
-        if(self.pov_working):
-            # Render the scene
-            viewport = mujoco.MjrRect(0, 0, self.width, self.height)
-
-            # make the current window context 
-            mujoco.glfw.glfw.make_context_current(self.window)
-            mujoco.glfw.glfw.swap_interval(1)
-
-            # update the scene & render
-            mujoco.mjv_updateScene(self.model, self.data, self.opt, None, self.camera, mujoco.mjtCatBit.mjCAT_ALL.value, self.scene)
-            mujoco.mjr_render(viewport, self.scene, self.context)
-
-            # Update the window
-            mujoco.glfw.glfw.swap_buffers(self.window)
-            mujoco.glfw.glfw.poll_events()
-
+    # function to render the window (pov)
+    def windowView(self, model, data, opt, camera, scene, context, window):
         # Render the scene
-        viewport = mujoco.MjrRect(0, 0, self.width, self.height)
+        viewport = mujoco.MjrRect(0, 0, WIDTH, HEIGHT)
 
-        # make the current window context
-        mujoco.glfw.glfw.make_context_current(self.window_top)
+        # make the current window context 
+        mujoco.glfw.glfw.make_context_current(window)
         mujoco.glfw.glfw.swap_interval(1)
 
         # update the scene & render
-        mujoco.mjv_updateScene(self.model, self.data, self.opt, None, self.camera_top, mujoco.mjtCatBit.mjCAT_ALL.value, self.scene_top)
-        mujoco.mjr_render(viewport, self.scene_top, self.context_top)
+        mujoco.mjv_updateScene(model, data, opt, None, camera, mujoco.mjtCatBit.mjCAT_ALL.value, scene)
+        mujoco.mjr_render(viewport, scene, context)
 
         # Update the window
-        mujoco.glfw.glfw.swap_buffers(self.window_top)
+        mujoco.glfw.glfw.swap_buffers(window)
         mujoco.glfw.glfw.poll_events()
 
+    # Used to view the environment
+    def render(self):
+        if(self.pov_working):
+ 
+            self.windowView(self.model, self.data, self.opt, self.camera, self.scene, self.context, self.window)
+            
+            # Get the height map 
+            _, self.rgb_buffer = get_height_map(self.model, self.data, self.camera, self.scene, self.context, self.window)
+    
+        ## WINDOW 2 ##
+        self.windowView(self.model, self.data, self.opt, self.camera_top, self.scene_top, self.context_top, self.window_top)
 
     # Used to do a step in the environment
-    def step(self, action):
-        control1, control2, control3 = action
+    def step(self):
+        mujoco.mj_step(self.model, self.data)
 
-        # Set the control
-        self.data.ctrl[0] = control1
-        self.data.ctrl[1] = control2
-        self.data.ctrl[2] = control3
-        
+
+    # Start sim time
+    def startSim(self):
+        self.simStart = self.data.time
+
+        return self.simStart
+    
+    # Set torques
+    def setTorques(self, torques):
+        self.data.ctrl[0:3] = torques
+
+    
+    # Close
+    def close(self):
+        mujoco.glfw.glfw.terminate()    
+
         
 
 
 
 if __name__ == "__main__":
     env = quadrupedEnv()
-    env.reset()
-    env.render()
+
+    simstart = env.startSim()
+    
+    while not mujoco.glfw.glfw.window_should_close(env.window_top):
+        simstart = env.startSim()
+
+        torques = [0.1, 0.001, 0.001]
+
+        while (env.data.time - simstart < 1.0/60.0):
+            env.step()
+
+        env.render()
+        if(env.pov_working):
+            # Finding teh height map from the rgb buffer
+            depth_buffer = get_height_map_from_rgb(env.rgb_buffer)
+
+            # # Display the height map
+            cv2.imshow("Height Map", depth_buffer)
+
+            if cv2.waitKey(1) == ord('q'):
+                break
+        
