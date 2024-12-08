@@ -239,7 +239,7 @@ class quadrupedEnv(gym.Env):
                 if contact.geom1 or contact.geom2:  # Assuming contact indicates terrain interaction
                     terrain_adapt_reward += 0.1  # Reward for maintaining contact
         
-        A = 4
+        A = 9
         B = 1
         C = 8
         D = 10
