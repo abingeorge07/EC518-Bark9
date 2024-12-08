@@ -1,0 +1,41 @@
+diff --git a/train_racing.py b/train_racing.py
+index d59e635..88d2c96 100644
+--- a/train_racing.py
++++ b/train_racing.py
+@@ -27,7 +27,7 @@ GYM environment using the mujoco model
+ '''
+ 
+ # Paths to models
+-patriq = "PATRIQ/patriq.xml"
++patriq = "PATRIQ/stairs.xml"
+ example_quad = "models/google_barkour_v0/scene_mjx.xml"
+ 
+ 
+@@ -76,7 +76,7 @@ class quadrupedEnv(gym.Env):
+     def reset(self):
+ 
+         # # # Reset the model
+-        mujoco.glfw.glfw.terminate()
++        # mujoco.glfw.glfw.terminate()
+ 
+         # Load the model and data
+         mujoco.glfw.glfw.init()
+@@ -176,7 +176,6 @@ class quadrupedEnv(gym.Env):
+         
+         self.render()
+ 
+-        print(self.data.time)
+         if(self.data.time > 20.0):
+             self.done = True
+         else:
+@@ -190,6 +189,10 @@ class quadrupedEnv(gym.Env):
+         # Get the reward
+         reward = self.findReward()
+ 
++
++
++        print("Time: ", self.data.time, " Reward: ", reward)
++
+         # print(reward)
+ 
+ 

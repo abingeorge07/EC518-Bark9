@@ -1,0 +1,13 @@
+diff --git a/train_racing.py b/train_racing.py
+index d59e635..34f0c8c 100644
+--- a/train_racing.py
++++ b/train_racing.py
+@@ -27,7 +27,7 @@ GYM environment using the mujoco model
+ '''
+ 
+ # Paths to models
+-patriq = "PATRIQ/patriq.xml"
++patriq = "PATRIQ/grids.xml"
+ example_quad = "models/google_barkour_v0/scene_mjx.xml"
+ 
+ 

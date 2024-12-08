@@ -1,0 +1,4 @@
+directory: /media/abg309/Personal/PhD/Coursework/EC518/Project/EC518-Bark9/rlkit/..
+git hash: 34eebda66257bb2b581f45ebd3a3b75866eb74ab
+git branch name: abg
+
