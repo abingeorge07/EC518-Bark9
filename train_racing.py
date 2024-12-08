@@ -8,8 +8,19 @@ import cv2
 import torch
 import numpy as np
 from torchvision.transforms import Compose, Normalize, Resize, ToTensor
-from spinup import sac_pytorch
-from spinup.algos.pytorch.sac.core import MLPActorCritic
+
+import rlkit.torch.pytorch_util as ptu
+from rlkit.data_management.env_replay_buffer import EnvReplayBuffer
+from rlkit.envs.wrappers import NormalizedBoxEnv
+from rlkit.launchers.launcher_util import setup_logger
+from rlkit.samplers.data_collector import MdpPathCollector
+from rlkit.torch.sac.policies import TanhGaussianPolicy, MakeDeterministic
+from rlkit.torch.sac.sac import SACTrainer
+from rlkit.torch.networks import ConcatMlp
+from rlkit.torch.torch_rl_algorithm import TorchBatchRLAlgorithm
+
+# import spinup
+
 
 '''
 GYM environment using the mujoco model
@@ -243,51 +254,23 @@ if __name__ == "__main__":
 
 
     env = quadrupedEnv()
-    env_fn = lambda : quadrupedEnv()
-
-    # Hyperparameters
-    ac_kwargs = dict(hidden_sizes=[256, 256])
-
-    # Train SAC
-    sac_pytorch(
-        env_fn=env_fn,
-        actor_critic=None,  # Use default MLPActorCritic or provide a custom one
-        ac_kwargs=ac_kwargs,
-        seed=42,
-        steps_per_epoch=4000,
-        epochs=100,
-        replay_size=int(1e6),
-        gamma=0.99,
-        polyak=0.995,
-        lr=1e-3,
-        alpha=0.2,
-        batch_size=100,
-        start_steps=10000,
-        update_after=1000,
-        update_every=50,
-        num_test_episodes=10,
-        max_ep_len=1000,
-        save_freq=10,
-    )
-
-
-    # simstart = env.startSim()
+    simstart = env.startSim()
     
-    # while not mujoco.glfw.glfw.window_should_close(env.window_top):
-    #     simstart = env.startSim()
+    while not mujoco.glfw.glfw.window_should_close(env.window_top):
+        simstart = env.startSim()
 
-    #     torques = [0.1, 0.001, 0.001]
+        torques = [0.1, 0.001, 0.001]
 
-    #     while (env.data.time - simstart < 10.0/60.0):
-    #         env.step()
+        while (env.data.time - simstart < 10.0/60.0):
+            env.step()
 
-    #     env.render()
-    #     if(env.pov_working):
-    #         # Display the height map
-    #         cv2.imshow("Height Map", env.depth_mujoco)
-    #         # cv2.imshow("Depth Map", env.depth_map)
+        env.render()
+        if(env.pov_working):
+            # Display the height map
+            cv2.imshow("Height Map", env.depth_mujoco)
+            # cv2.imshow("Depth Map", env.depth_map)
 
-    #         if cv2.waitKey(1) == ord('q'):
-    #             break
+            if cv2.waitKey(1) == ord('q'):
+                break
         
     
