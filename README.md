@@ -46,3 +46,35 @@ EC518-Bark9/
 ├── results/                 # Saved models, logs, and reward plots
 └── README.md
 ```
+
+
+---
+
+## 🧠 Algorithms
+
+### **Soft Actor-Critic (SAC)**
+- Uses stochastic policy gradients for continuous control.  
+- Encourages exploration via entropy regularization.  
+- Achieves smoother convergence and better stability in continuous action spaces.
+
+### **Deep Q-Learning (DQN)**
+- Discrete-action agent trained with target networks and experience replay.  
+- Provides a strong baseline for evaluating SAC’s advantages in continuous control.
+
+---
+
+## ⚒️ Installation & Setup
+
+### Prerequisites
+- Python 3.8+
+- MuJoCo (>= 2.3)
+- Gymnasium or OpenAI Gym (depending on environment wrapper)
+- PyTorch
+- NumPy, Matplotlib
+
+### Installation
+```bash
+git clone https://github.com/abingeorge07/EC518-Bark9.git
+cd EC518-Bark9
+pip install -r requirements.txt
+
