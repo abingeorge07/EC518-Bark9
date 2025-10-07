@@ -1,1 +1,1 @@
-# EC518: Final Project
+# EC518 Robot Learning: Final Project
