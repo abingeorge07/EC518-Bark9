@@ -24,6 +24,7 @@ The goal is to train control policies for dynamic movement (balancing, reaching,
 ---
 
 ## 🧩 Project Structure
+```bash
 EC518-Bark9/
 │
 ├── mujoco_models/           # Custom 2-DOF robot XML files
@@ -44,3 +45,4 @@ EC518-Bark9/
 │
 ├── results/                 # Saved models, logs, and reward plots
 └── README.md
+```
