@@ -27,23 +27,20 @@ The goal is to train control policies for dynamic movement (balancing, reaching,
 ```bash
 EC518-Bark9/
 │
-├── mujoco_models/           # Custom 2-DOF robot XML files
-├── agents/
-│   ├── sac_agent.py         # Soft Actor-Critic implementation
-│   ├── dqn_agent.py         # Deep Q-Learning implementation
+├── DQL/
+│   ├── train_racing.py      # Main script to run the DQL RL training model.
+│   ├── PATRIQ/              # All the xml files for our training.
+│     
+├── SAC/
+│   ├── train_racing.py      # Main script to run the SAC RL training model.
+│   ├── PATRIQ/              # All the xml files for our training.
 │
-├── envs/
-│   ├── bark9_env.py         # Custom MuJoCo environment wrapper
+├── Eval/Evaluation
+│   ├── data
+│   ├── evaluation.py        # Script used to analyze the experimental data. 
 │
-├── training/
-│   ├── train_sac.py         # SAC training loop
-│   ├── train_dqn.py         # DQN training loop
-│
-├── utils/
-│   ├── replay_buffer.py     # Experience replay buffer implementation
-│   ├── plot_utils.py        # Visualization helpers
-│
-├── results/                 # Saved models, logs, and reward plots
+├── Final_Report.pdf         # Final report of our project.
+|
 └── README.md
 ```
 
@@ -76,5 +73,13 @@ EC518-Bark9/
 ```bash
 git clone https://github.com/abingeorge07/EC518-Bark9.git
 cd EC518-Bark9
-pip install -r requirements.txt
+
+# Running DQL
+cd DQL
+python3 train_racing.py
+
+# Running SAC
+cd SAC
+python3 train_racing.py
+```
 
