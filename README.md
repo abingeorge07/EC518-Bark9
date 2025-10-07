@@ -39,8 +39,8 @@ EC518-Bark9/
 │   ├── data
 │   ├── evaluation.py        # Script used to analyze the experimental data. 
 │
-├── Final_Report.pdf         # Final report of our project.
-|
+├── EC518_Final_Report_Aditya_Abin.pdf         
+│
 └── README.md
 ```
 
