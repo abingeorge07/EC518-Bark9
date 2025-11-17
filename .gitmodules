@@ -1,3 +1,6 @@
 [submodule "models"]
 	path = models
 	url = https://github.com/google-deepmind/mujoco_menagerie.git
+[submodule "spinningup_git"]
+	path = spinningup_git
+	url = https://github.com/openai/spinningup.git
