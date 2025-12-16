@@ -1,6 +1,6 @@
 <mujoco model="ec518_PATriQ">
     <compiler angle="radian" coordinate="local"/>
-    <option gravity="0 0 9.81" timestep="0.001"/>
+    <option gravity="0 0 -9.81" timestep="0.001"/>
     <default>
     <geom conaffinity="0" contype="4"/>
     <!-- condim=‘1’ solref=‘0.005 1’ sol"   imp ="0.9 0.95 0.001 0.5 2"/>-->
